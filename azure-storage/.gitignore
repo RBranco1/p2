@@ -1,0 +1,14 @@
+.buildpath
+.settings/*
+.project
+.cache.properties
+composer.lock
+test-file-*
+.idea
+.php_cs.cache
+cache.properties
+output.txt
+/vendor/*
+/output/*
+/build/*
+/doc/*
