@@ -1,9 +1,45 @@
 <?php
-require 'vendor/autoload.php';
 
+// Diretórios base dos pacotes
+$baseDirs = [
+    'MicrosoftAzure\Storage\Blob' => __DIR__ . '/azure-storage/azure-storage-blob/src/blob',
+    'MicrosoftAzure\Storage\Common' => __DIR__ . '/azure-storage/azure-storage-common/src/common',
+    // Adicione outros diretórios conforme necessário
+];
+
+// Autoload básico para carregar classes do SDK
+spl_autoload_register(function ($class) use ($baseDirs) {
+    // Procura o namespace base
+    foreach ($baseDirs as $prefix => $baseDir) {
+        // Verifica se a classe usa o namespace prefixo
+        $len = strlen($prefix);
+        if (strncmp($prefix, $class, $len) !== 0) {
+            continue;
+        }
+
+        // Pega o nome relativo da classe
+        $relativeClass = substr($class, $len);
+
+        // Substitui o namespace prefixo pelo diretório base, substitui namespace
+        // separadores por separadores de diretório no nome relativo da classe,
+        // e adiciona .php
+        $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
+
+        // Se o arquivo existir, inclua-o
+        if (file_exists($file)) {
+            require $file;
+            return;
+        }
+    }
+});
+
+// Teste se a classe está sendo carregada
 use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 use MicrosoftAzure\Storage\Common\Exceptions\ServiceException;
 use MicrosoftAzure\Storage\Blob\Models\CreateBlockBlobOptions;
+
+// Resto do seu código...
+
 
 // Configurações de exibição de erros (para debug)
 ini_set('display_errors', 1);
