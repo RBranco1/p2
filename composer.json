@@ -1,0 +1,6 @@
+{
+    "require": {
+        "microsoft/azure-storage-blob": "^1.5",
+        "ralouphie/getallheaders": "^3.0"
+    }
+}
